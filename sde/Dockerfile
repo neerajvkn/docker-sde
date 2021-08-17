@@ -2,10 +2,10 @@ FROM ubuntu:18.04
 RUN apt-get update -y
 RUN apt-get install python3-pip -y
 RUN apt-get install gunicorn3 -y
-RUN pip install requests -y
+RUN pip3 install requests
 
 COPY requirements.txt requirements.txt
-COPY flaskproj /opt/
+COPY sde /opt/
 
 RUN pip install -r requirements.txt
 
