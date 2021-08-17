@@ -70,6 +70,7 @@
     }
 
     function get_scheduled_instances() {
+        $("#schedules_instances_table tr").remove(); 
         $.ajax({
             url: "/scheduled_instances",
             type: 'POST',
