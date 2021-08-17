@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang=en>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<head>
+    <title> SDE-I-Backend-Assignment </title>
+</head>
+
+<body>
+    <form action="/" method="POST" name='primary' id="primary_from">
+        <label for="instanceID">Instance ID </label>
+        <input type="text" id="instanceID" name="instanceID" required><br><br>
+        <div>
+            <input type="radio" id="enable_scheduler" name="selection" value="enable_scheduler" checked>
+            <label for="enable_scheduler">Enable Scheduler</label>
+            <input type="radio" id="disable_scheduler" name="selection" value="disable_scheduler">
+            <label for="disable_scheduler">Disable Scheduler</label>
+        </div>
+        <br>
+        <div id="scheduleDiv">
+            Enter the schedule in the below box as integers separated by comma ( 0 : monday, 1: tuesday, 2: wednesday,
+            3:thursday, 4: friday, 5: saturday, 6:sunday) <br>
+            For eg: If you want to set schedule for all weekdays, enter 0,1,2,3,4,5,6 <br>
+            if you want to enable schedule for monday, wednesday and friday only, enter 0,2,4 <br> <br>
+            <label for="schedule">Schedule </label>
+            <input type="text" id="schedule" name="schedule" required><br><br>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+    <br>
+    <br>
+
+
+    <button onclick="get_scheduled_instances()">Get Instances with existing schedule</button>
+    <br>
+    <div id="schedules_instances_table">
+        <table id="instances_table" >
+        </table>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    $(document).on('submit', '#primary_from', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/',
+            data: { 'instanceID': $("#instanceID").val(), 'action': radios.value, 'schedule': $("#schedule").val() },
+            success: function (data) {
+                alert(data);
+            }
+        })
+    });
+</script>
+
+<script type="text/javascript">
+    var radios = document.forms["primary"].elements["selection"];
+    for (var i = 0, max = radios.length; i < max; i++) {
+        radios[i].onclick = function () {
+            if (this.value == 'enable_scheduler') {
+                document.getElementById('schedule').setAttribute("required", "");
+                document.getElementById('scheduleDiv').style.display = 'block';
+            }
+            if (this.value == 'disable_scheduler') {
+                document.getElementById('schedule').removeAttribute("required");
+                document.getElementById('scheduleDiv').style.display = 'none';
+            }
+        }
+    }
+
+    function get_scheduled_instances() {
+        $.ajax({
+            url: "/scheduled_instances",
+            type: 'POST',
+            success: function (data) {
+                var array = JSON.parse("[" + data + "]");
+                array[0].forEach( i =>{
+                    var table = document.getElementById("instances_table");
+                    var row = table.insertRow(0);
+                    var cell1 = row.insertCell(0);
+                    var row = table.insertRow(0);
+                    cell1.innerHTML = i;
+                })
+            }
+        });
+    }
+
+</script>
