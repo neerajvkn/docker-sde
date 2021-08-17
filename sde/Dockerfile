@@ -4,10 +4,10 @@ RUN apt-get install python3-pip -y
 RUN apt-get install gunicorn3 -y
 RUN pip3 install requests
 
-COPY requirements.txt requirements.txt
+COPY ./requirements.txt requirements.txt
 COPY sde /opt/
 
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 WORKDIR /opt/
 
