@@ -41,31 +41,42 @@ https://s3.amazonaws.com/solutions-reference/aws-instance-scheduler/latest/aws-i
 20. Repeat the steps 15 to 17 to create an API for this function also.
 21. Now Server side of SDE-I Backend Assignment is complete.
 
-# Setup - Local Setup
-1. Install Python 3.9.8 ( if on a windows machine, set path variable pointing to the installation directory)
-2. Install pip3 and set path variable
-3. Download and extract the repository
-4. Open a terminal window and navigate to the extracted repository folder
-5. From inside the folder, create a python virtual environment and activate it. ( Refer : https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/ )
-6. Once the virtualenv is activated, install flask using 
-```
-pip3 install flask   
-```
-7. Install python requests library using
-```
-pip3 install requests
-```
-8. Goto the lambda app EC2Schedueler and click the API Gateway on dashboard. 
-9. Under Triggers, find the API Function we create and expand details section, and copy the API Endpoint
-10. Open the app.py in root the downloaded repo and replace the url assigned to api_url variable under function api_call() with the copied endpoint url
-11. Now goto lambda app SchedulerInstances and copy its api endpoint url and replace the value assigned to api_url varible in line 35 under function scheduled_instances() with the copied endpoint url
 
-12. Now Local Machine for development setup is complete. To run the app in the local machine, type
-```
-python app.py  
+# Docker Installation on AWS EC2
+1. create a ubuntu 18.04 t2.micro instance
 
-or
+2. open inboud TCP port TCP 80 and 8000 in the security policy for the instance
+[ Tyepe : Custom TCP, Port range : 8000, Source : Anywhere IPv4]
+[ Tyepe : Custom TCP, Port range : 80, Source : Anywhere IPv4]
+and save rules
 
-python3 app.py
+4. Connect to the instance via SSH
+
+5. Install docker-compose- 
+ Add docker official repo using below command and then run sudo apt-get update
 ```
-13. Once the terminal says the app is running, goto any browser and enter the link shown in the terminal window to access the app
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+6. Once repo is added and repo list udpated, run
+```
+sudo apt-get install docker-compose
+```
+
+7. clone repo to the instance
+```
+https://github.com/neerajvkn/docker-sde
+```
+8. Once the cloning is complete, navigate to the cloned folder and open docker-compose.yml and replace the server adress 0.0.0.0 with with the public ipv4 address of the instance on which the app is going to be hosted. Save and exit.
+
+9. Now add docker user necessary permission by running - log out and log back in so the changes take effect
+
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+10. After logginb back in, to build and run the docker app, run 
+```
+docker-compose up --build -d
+```
+
+Now the app can be accessed using the public ipv4 address of the instance
