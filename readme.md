@@ -29,7 +29,7 @@ https://s3.amazonaws.com/solutions-reference/aws-instance-scheduler/latest/aws-i
  ],
 ```
 11. Now go to AWS Lambda and click create function, select author from scratch, Enter function name ("EC2Scheduler"), change runtime to python 3.9 and under 'Change default execution role', select 'Use an existing role' select the role we found in step 8 and click create function.
-12. Once the function is created, replace the contents of code under lambda_function with the contents of EC2Scheduler in the AWS Directory of the repo. 
+12. Once the function is created, replace the contents of code under lambda_function with the contents of EC2Scheduler in the AWS Directory inside sde directory of the repo. 
 13. Now goto DynamoDB and under tables, find a table similar to 'EC2Scheduler-ConfigTable-1HC6CZHH5I2KM' and copy its name
 14. In the created lambda function ( EC2Scheduler ), on line 11,  replace the table tablename already present there with the copied table name, on line 77, replace the timezone with your actual time zone. Ctrl+S to save and click deploy.
 15. Then click '+ Add trigger' in the dashboard and select API Gateway as trigger
@@ -37,7 +37,7 @@ https://s3.amazonaws.com/solutions-reference/aws-instance-scheduler/latest/aws-i
 17. Click Add to create and deploy the API
 
 18. Now again go to AWS Lambda and click create function, select author from scratch, Enter function name ("ScheduledInstances"), change runtime to python 3.9 and under 'Change default execution role', select 'Use an existing role' select the role we found in step 8 and click create function.
-19. Once the function is created, replace its contents with the contents of ScheduledInstances.py in the AWS Directory of the repo.
+19. Once the function is created, replace its contents with the contents of ScheduledInstances.py in the AWS Directory inside sde directory of the repo.
 20. Repeat the steps 15 to 17 to create an API for this function also.
 21. Now Server side of SDE-I Backend Assignment is complete.
 
